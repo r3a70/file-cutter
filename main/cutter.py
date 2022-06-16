@@ -2,6 +2,7 @@ import asyncio
 import ffmpeg
 import math
 import os
+from typing import Optional
 
 
 def time_formatter(duration: int) -> str:
@@ -32,12 +33,14 @@ class Main:
         self.split_count: int = 0
         self.file_size: int = 0
         self.file_duration: int = 0
+        self.directory: str = ""
 
     def split_counter(self) -> tuple:
         """
         :return: Error message
         """
         self.file_size = int(f"{os.stat(self.file_name).st_size / float(1 << 20):.0f}")
+        self.directory = self.file_name+"_list"
 
         if self.file_size < self.split_size:
             return False, f"File size is smaller than {self.split_size}MB, so can't cut it"
@@ -72,5 +75,5 @@ class Main:
                 self.initialize_command(i*1*self.file_duration,
                                         self.file_duration,
                                         i,
-                                        self.file_name+"_list")
+                                        self.directory)
             )

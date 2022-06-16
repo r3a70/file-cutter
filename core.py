@@ -3,7 +3,7 @@ import asyncio
 from main.cutter import Main
 
 
-async def main(file_name: str, split_size: int) -> None:
+async def main(file_name: str, split_size: int) -> tuple:
     video = Main(file=file_name, split_size=split_size)
     video.split_counter()
     video.duration_file()

@@ -11,6 +11,8 @@ async def main(file_name: str, split_size: int) -> tuple:
     task = asyncio.create_task(video.cutter_file())
     await task
 
+    return video.directory, video.file_duration
+
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Example: python3 core.py file_name.ext split_size")

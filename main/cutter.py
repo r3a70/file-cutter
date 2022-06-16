@@ -77,3 +77,14 @@ class Main:
                                         i,
                                         self.directory)
             )
+
+
+class Information:
+
+    def __init__(self, file_name):
+        self.file_name = file_name
+        self.load = ffmpeg.probe(self.file_name)
+
+    def duration(self) -> int:
+        return int(float(self.load['streams'][-1]['duration'] if self.load else 0))
+

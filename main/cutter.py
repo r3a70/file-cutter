@@ -2,7 +2,7 @@ import asyncio
 import ffmpeg
 import math
 import os
-from typing import Optional
+from pathlib import Path
 
 
 def time_formatter(duration: int) -> str:
@@ -27,7 +27,8 @@ class Main:
         :param file: (file_name) if conditions incorrect, return false
         :param split_size: (file_size for split in MB) if conditions incorrect, return error text
         """
-        self.file_name = file
+        self.file_name = os.path.join(Path(__file__).resolve().parent.parent, file)
+        print(self.file_name)
         self.split_size = split_size
         self.file: ffmpeg.probe = ffmpeg.probe(self.file_name)
         self.split_count: int = 0

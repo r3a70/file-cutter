@@ -3,7 +3,7 @@ import asyncio
 from main.cutter import Main
 
 
-async def main(file_name: str, split_size: int) -> str:
+async def main(file_name: str, split_size: int, duration: int) -> str:
     video = Main(file=file_name, split_size=split_size)
     video.split_counter()
     video.duration_file()
@@ -15,8 +15,8 @@ async def main(file_name: str, split_size: int) -> str:
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Example: python3 core.py file_name.ext split_size")
+        print("Example: python3 core.py file_name.ext split_size file_duration -> in (second)")
         exit(1)
 
-    asyncio.run(main(sys.argv[1], int(sys.argv[2])))
+    asyncio.run(main(sys.argv[1], int(sys.argv[2]), int(sys.argv[3])))
 

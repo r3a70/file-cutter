@@ -22,18 +22,16 @@ class Main:
     """
     split file by size
     """
-    def __init__(self, file: str, split_size: int):
+    def __init__(self, file: str, split_size: int, file_duration: int):
         """
         :param file: (file_name) if conditions incorrect, return false
         :param split_size: (file_size for split in MB) if conditions incorrect, return error text
         """
         self.file_name = os.path.join(Path(__file__).resolve().parent.parent, file)
-        print(self.file_name)
         self.split_size = split_size
-        self.file: ffmpeg.probe = ffmpeg.probe(self.file_name)
+        self.file_duration = file_duration
         self.split_count: int = 0
         self.file_size: int = 0
-        self.file_duration: int = 0
         self.directory: str = ""
 
     def split_counter(self) -> tuple:
@@ -52,8 +50,7 @@ class Main:
         """
         :return: None
         """
-        duration = int(float(self.file['streams'][-1]['duration'] if self.file else 0))
-        self.file_duration = int(math.ceil(duration / self.split_count))
+        self.file_duration = int(math.ceil(self.file_duration / self.split_count))
 
     def initialize_command(self, start: int, end: int, count: int, directory: str) -> str:
         """

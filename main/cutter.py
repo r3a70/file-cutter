@@ -1,4 +1,6 @@
 import asyncio
+import subprocess
+
 import ffmpeg
 import math
 import os
@@ -27,7 +29,8 @@ class Main:
         :param file: (file_name) if conditions incorrect, return false
         :param split_size: (file_size for split in MB) if conditions incorrect, return error text
         """
-        self.file_name = os.path.join(Path(__file__).resolve().parent.parent, file)
+        self.file = file
+        self.file_name = os.path.join(Path(__file__).resolve().parent.parent.parent, file)
         self.split_size = split_size
         self.file_duration = file_duration
         self.split_count: int = 0
@@ -61,7 +64,7 @@ class Main:
         :return: return command for running ffmpeg
         """
         return f"ffmpeg -ss {time_formatter(start)} -i {self.file_name} -t {time_formatter(end)} -c:v copy -c:a copy " \
-               f"{directory}/{count}__{self.file_name}"
+               f"{directory}/{count}__{self.file}"
 
     async def cutter_file(self) -> None:
         """
@@ -69,12 +72,15 @@ class Main:
         """
         os.system(f"mkdir {self.file_name}_list")
         for i in range(self.split_count+1):
-            await asyncio.create_subprocess_shell(
+            process = await asyncio.create_subprocess_shell(
                 self.initialize_command(i*1*self.file_duration,
                                         self.file_duration,
                                         i,
-                                        self.directory)
+                                        self.directory),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE
             )
+            await process.communicate()
 
 
 class Information:

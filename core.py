@@ -1,10 +1,11 @@
 import sys
 import asyncio
-from main.cutter import Main
+from pathlib import Path
+from cutter.main.cutter import Main
 
 
 async def main(file_name: str, split_size: int, duration: int) -> str:
-    video = Main(file=file_name, split_size=split_size)
+    video = Main(file=file_name, split_size=split_size, file_duration=duration)
     video.split_counter()
     video.duration_file()
 
